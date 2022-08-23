@@ -63,7 +63,11 @@ const addBookHandler = (request, h) => {
 const getAllBooksHandler = () => ({
     status: 'success',
     data: {
-        books,
+        books: books.map((book) => ({
+            id: book.id,
+            name: book.name,
+            publisher: book.publisher,
+        })),
     },
 });
 
@@ -169,6 +173,30 @@ const deleteBookByIdHandler = (request, h) => {
     response.code(404);
     return response; 
 };
+
+/* 
+const getBookByNameHandler = (request, h) => {
+    const { name } = request.params;
+
+    const book = books.filter((n) => n.name === name)[0];
+    
+    if (book !== undefined) {
+        return {
+            status: 'success',
+            data: {
+                book,
+            },
+        };
+    }
+
+    const response = h.response({
+        status: 'fail',
+        message: 'Buku tidak ditemukan',
+    });
+    response.code(404);
+    return response;
+}; 
+*/
 
 module.exports = {
     addBookHandler, 
