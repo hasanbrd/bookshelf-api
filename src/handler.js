@@ -9,12 +9,15 @@ const addBookHandler = (request, h) => {
     const id = nanoid(16);
     const insertedAt = new Date().toISOString();
     const updatedAt = insertedAt;
-    const finished = false;
+    let finished = false;
+    if (readPage === pageCount) {
+        finished = true;
+    }
 
     const newBook = {
         id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt,
     };
-
+    
     if (!name) {
         const response = h.response({
             status: 'fail',
@@ -60,11 +63,7 @@ const addBookHandler = (request, h) => {
 const getAllBooksHandler = () => ({
     status: 'success',
     data: {
-        books: books.map((book) => ({
-            id: book.id,
-            name: book.name,
-            publisher: book.publisher,
-        })),
+        books,
     },
 });
 
@@ -148,9 +147,33 @@ const editBookByIdHandler = (request, h) => {
     return response;
 };
 
+const deleteBookByIdHandler = (request, h) => {
+    const { id } = request.params;
+
+    const index = books.findIndex((book) => book.id === id);
+
+    if (index !== -1) {
+        books.splice(index, 1);
+        const response = h.response({
+            status: 'success',
+            message: 'Buku berhasil dihapus',
+        });
+        response.code(200);
+        return response;
+    }
+
+    const response = h.response({
+        status: 'fail',
+        message: 'Buku gagal dihapus. Id tidak ditemukan',
+    });
+    response.code(404);
+    return response; 
+};
+
 module.exports = {
     addBookHandler, 
     getAllBooksHandler, 
     getBookByIdHandler,
     editBookByIdHandler,
+    deleteBookByIdHandler,
 };
