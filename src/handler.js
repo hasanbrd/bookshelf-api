@@ -20,10 +20,6 @@ const addBookHandler = (request, h) => {
         id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertAt, updateAt,
     };
 
-    books.push(newBook);
-
-    const isSuccess = books.filter((book) => book.id === id).length > 0;
-
     if (!name) {
         const response = h.response({
             status: 'fail',
@@ -41,6 +37,10 @@ const addBookHandler = (request, h) => {
         response.code(400);
         return response;
     }
+
+    books.push(newBook);
+
+    const isSuccess = books.filter((book) => book.id === id).length > 0;
 
     if (isSuccess) {
         const response = h.response({
