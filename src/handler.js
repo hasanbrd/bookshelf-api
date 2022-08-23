@@ -63,19 +63,19 @@ const addBookHandler = (request, h) => {
 const getAllBooksHandler = (request, h) => {
     const { name } = request.query;
 
-    const isSpecified = books.filter((specifiedBook) => specifiedBook.name === name);
-
-    if (isSpecified !== undefined) {
+    if (name !== undefined) {
+        const specifiedBook = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
+        
         const response = h.response({
-            status: 'success',
-            data: {
-                books: books.map((specifiedBook) => ({
-                    id: specifiedBook.id,
-                    name: specifiedBook.name,
-                    publisher: specifiedBook.publisher,
+              status: 'success',
+              data: {
+                books: specifiedBook.map((book) => ({
+                  id: book.id,
+                  name: book.name,
+                  publisher: book.publisher,
                 })),
-            },
-        });
+              },
+            });
         response.code(200);
         return response;
     }
