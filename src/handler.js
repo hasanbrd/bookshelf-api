@@ -61,24 +61,7 @@ const addBookHandler = (request, h) => {
 };
 
 const getAllBooksHandler = (request, h) => {
-    const { name, reading } = request.query;
-
-    if (name !== undefined) {
-        const specifiedBook = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
-        
-        const response = h.response({
-              status: 'success',
-              data: {
-                books: specifiedBook.map((book) => ({
-                  id: book.id,
-                  name: book.name,
-                  publisher: book.publisher,
-                })),
-              },
-            });
-        response.code(200);
-        return response;
-    }
+    const { name, reading, finished } = request.query;
 
     if (reading !== undefined) {
         const isRead = books.filter((book) => Number(book.reading) === Number(reading));
@@ -93,6 +76,40 @@ const getAllBooksHandler = (request, h) => {
                 })),
             },
         });
+        response.code(200);
+        return response;
+    }
+
+    if (finished !== undefined) {
+        const isFinished = books.filter((book) => book.finished == finished);
+
+        const response = h.response({
+            status: 'success',
+            data: {
+                books: isFinished.map((book) => ({
+                    id: book.id,
+                    name: book.name,
+                    publisher: book.publisher,
+                })),
+            },
+        });
+        response.code(200);
+        return response;
+    }
+
+    if (name !== undefined) {
+        const specifiedBook = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
+        
+        const response = h.response({
+              status: 'success',
+              data: {
+                books: specifiedBook.map((book) => ({
+                  id: book.id,
+                  name: book.name,
+                  publisher: book.publisher,
+                })),
+              },
+            });
         response.code(200);
         return response;
     }
