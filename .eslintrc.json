@@ -17,6 +17,7 @@
         "indent":"off",
         "max-len":"off",
         "no-trailing-spaces":"off",
-        "quotes":"off"
+        "quotes":"off",
+        "eqeqeq":"off"
     }
 }
