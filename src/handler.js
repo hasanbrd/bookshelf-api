@@ -60,16 +60,39 @@ const addBookHandler = (request, h) => {
     return response;
 };
 
-const getAllBooksHandler = () => ({
-    status: 'success',
-    data: {
-        books: books.map((book) => ({
-            id: book.id,
-            name: book.name,
-            publisher: book.publisher,
-        })),
-    },
-});
+const getAllBooksHandler = (request, h) => {
+    const { name } = request.query;
+
+    const isSpecified = books.filter((specifiedBook) => specifiedBook.name === name);
+
+    if (isSpecified !== undefined) {
+        const response = h.response({
+            status: 'success',
+            data: {
+                books: books.map((specifiedBook) => ({
+                    id: specifiedBook.id,
+                    name: specifiedBook.name,
+                    publisher: specifiedBook.publisher,
+                })),
+            },
+        });
+        response.code(200);
+        return response;
+    }
+    
+    const response = h.response({
+        status: 'success',
+        data: {
+            books: books.map((book) => ({
+                id: book.id,
+                name: book.name,
+                publisher: book.publisher,
+            })),
+        },
+    });
+    response.code(200);
+    return response;    
+};
 
 const getBookByIdHandler = (request, h) => {
     const { id } = request.params;
@@ -173,30 +196,6 @@ const deleteBookByIdHandler = (request, h) => {
     response.code(404);
     return response; 
 };
-
-/* 
-const getBookByNameHandler = (request, h) => {
-    const { name } = request.params;
-
-    const book = books.filter((n) => n.name === name)[0];
-    
-    if (book !== undefined) {
-        return {
-            status: 'success',
-            data: {
-                book,
-            },
-        };
-    }
-
-    const response = h.response({
-        status: 'fail',
-        message: 'Buku tidak ditemukan',
-    });
-    response.code(404);
-    return response;
-}; 
-*/
 
 module.exports = {
     addBookHandler, 
