@@ -24,15 +24,15 @@ URL: /books
 
 3. getBookById
 Method : GET
-URL: /books/{bookId}
+URL: /books/{id}
 
 4. editBookById
 Method : PUT
-URL: /books/{bookId}
+URL: /books/{id}
 
 5. deleteBookById
 Method : DELETE
-URL: /books/{bookId}
+URL: /books/{id}
 ```
 
 ## NB
